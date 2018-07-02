@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_hb import HuobiServices as hb
-
+import pymysql
 
 class HuoBi(object):
 
@@ -16,6 +16,7 @@ class HuoBi(object):
             'size': 10,
         }
         data = hb.get_history_trade(params)
+        print(type(data))
         return data
 
 

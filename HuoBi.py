@@ -25,6 +25,9 @@ class HuoBi(object):
         if not None:
             for item in data['data']:
                 item = item['data']
+                print(round(int(item['ts']) / 1000))
+
+                
                 ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(round(int(item['ts']) / 1000)))
                 now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                 use_sql = '''insert into hb_base_detail (symbol, amount, price, direction, ts, created_at, updated_at) 

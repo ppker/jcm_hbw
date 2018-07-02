@@ -41,6 +41,10 @@ def get_depth(symbol, type):
     url = MARKET_URL + '/market/depth'
     return http_get_request(url, params)
 
+# 批量获取最近的交易 /market/history/trade
+def get_history_trade(params = None):
+    url = MARKET_URL + ' /market/history/trade'
+    return http_get_request(url, params)
 
 # 获取tradedetail
 def get_trade(symbol):

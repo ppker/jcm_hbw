@@ -12,4 +12,11 @@ class HuoBi(object):
 
 
 if __name__ == '__main__':
-    HuoBi().test()
+    Hb = HuoBi()
+    # HuoBi().test()
+    params = {
+        'symbol': 'btcusdt',
+        'size': 10,
+    }
+    data = Hb.get_history_trade(params)
+    print(data)

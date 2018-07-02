@@ -31,7 +31,7 @@ class HuoBi(object):
                 now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                 use_sql = '''insert into hb_base_detail (symbol, amount, price, direction, ts, created_at, updated_at) 
 values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], item['price'],
-                                                     item['direction'], ts_time, now_time)
+                                                     item['direction'], ts_time, now_time, now_time)
                 self.cursor.execute(use_sql)
                 self.db.commit()
 

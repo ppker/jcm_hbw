@@ -10,13 +10,18 @@ class HuoBi(object):
         data = hb.get_symbols()
         print(data)
 
+    def get_history_trade(self):
+        params = {
+            'symbol': 'btcusdt',
+            'size': 10,
+        }
+        data = hb.get_history_trade(params)
+        return data
+
 
 if __name__ == '__main__':
-    Hb = hb()
+    Hb = HuoBi()
     # HuoBi().test()
-    params = {
-        'symbol': 'btcusdt',
-        'size': 10,
-    }
-    data = Hb.get_history_trade(params)
+
+    data = Hb.get_history_trade()
     print(data)

@@ -12,7 +12,7 @@ class HuoBi(object):
 
 
 if __name__ == '__main__':
-    Hb = HuoBi()
+    Hb = hb()
     # HuoBi().test()
     params = {
         'symbol': 'btcusdt',

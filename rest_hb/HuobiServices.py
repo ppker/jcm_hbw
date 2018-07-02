@@ -5,7 +5,7 @@
 # @QQ      : 375235513
 # @github  : https://github.com/KlausQIU
 
-from . Utils import *
+from .Utils import *
 
 '''
 Market data API
@@ -37,14 +37,16 @@ def get_depth(symbol, type):
     """
     params = {'symbol': symbol,
               'type': type}
-    
+
     url = MARKET_URL + '/market/depth'
     return http_get_request(url, params)
 
+
 # 批量获取最近的交易 /market/history/trade
-def get_history_trade(params = None):
-    url = MARKET_URL + ' /market/history/trade'
+def get_history_trade(params=None):
+    url = MARKET_URL + '/market/history/trade'
     return http_get_request(url, params)
+
 
 # 获取tradedetail
 def get_trade(symbol):
@@ -81,6 +83,7 @@ def get_detail(symbol):
     url = MARKET_URL + '/market/detail'
     return http_get_request(url, params)
 
+
 # 获取  支持的交易对
 def get_symbols(long_polling=None):
     """
@@ -91,6 +94,7 @@ def get_symbols(long_polling=None):
         params['long-polling'] = long_polling
     path = '/v1/common/symbols'
     return api_key_get(params, path)
+
 
 '''
 Trade/Account API
@@ -105,7 +109,10 @@ def get_accounts():
     params = {}
     return api_key_get(params, path)
 
+
 ACCOUNT_ID = 0
+
+
 # 获取当前账户资产
 def get_balance(acct_id=None):
     """
@@ -113,7 +120,7 @@ def get_balance(acct_id=None):
     :return:
     """
     global ACCOUNT_ID
-    
+
     if not acct_id:
         accounts = get_accounts()
         acct_id = accounts['data'][0]['id'];
@@ -139,7 +146,7 @@ def send_order(amount, source, symbol, _type, price=0):
         accounts = get_accounts()
         acct_id = accounts['data'][0]['id']
     except BaseException as e:
-        print ('get acct_id error.%s' % e)
+        print('get acct_id error.%s' % e)
         acct_id = ACCOUNT_ID
 
     params = {"account-id": acct_id,
@@ -254,7 +261,6 @@ def orders_matchresults(symbol, types=None, start_date=None, end_date=None, _fro
     return api_key_get(params, url)
 
 
-
 # 申请提现虚拟币
 def withdraw(address, amount, currency, fee=0, addr_tag=""):
     """
@@ -278,6 +284,7 @@ def withdraw(address, amount, currency, fee=0, addr_tag=""):
 
     return api_key_post(params, url)
 
+
 # 申请取消提现虚拟币
 def cancel_withdraw(address_id):
     """
@@ -298,6 +305,7 @@ def cancel_withdraw(address_id):
 借贷API
 '''
 
+
 # 创建并执行借贷订单
 
 
@@ -314,7 +322,7 @@ def send_margin_order(amount, source, symbol, _type, price=0):
         accounts = get_accounts()
         acct_id = accounts['data'][0]['id']
     except BaseException as e:
-        print ('get acct_id error.%s' % e)
+        print('get acct_id error.%s' % e)
         acct_id = ACCOUNT_ID
 
     params = {"account-id": acct_id,
@@ -327,6 +335,7 @@ def send_margin_order(amount, source, symbol, _type, price=0):
 
     url = '/v1/order/orders/place'
     return api_key_post(params, url)
+
 
 # 现货账户划入至借贷账户
 
@@ -345,6 +354,7 @@ def exchange_to_margin(symbol, currency, amount):
     url = "/v1/dw/transfer-in/margin"
     return api_key_post(params, url)
 
+
 # 借贷账户划出至现货账户
 
 
@@ -362,6 +372,7 @@ def margin_to_exchange(symbol, currency, amount):
     url = "/v1/dw/transfer-out/margin"
     return api_key_post(params, url)
 
+
 # 申请借贷
 def get_margin(symbol, currency, amount):
     """
@@ -376,6 +387,7 @@ def get_margin(symbol, currency, amount):
     url = "/v1/margin/orders"
     return api_key_post(params, url)
 
+
 # 归还借贷
 def repay_margin(order_id, amount):
     """
@@ -387,6 +399,7 @@ def repay_margin(order_id, amount):
               "amount": amount}
     url = "/v1/margin/orders/{0}/repay".format(order_id)
     return api_key_post(params, url)
+
 
 # 借贷订单
 def loan_orders(symbol, currency, start_date="", end_date="", start="", direct="", size=""):
@@ -422,7 +435,7 @@ def margin_balance(symbol):
     url = "/v1/margin/accounts/balance"
     if symbol:
         params['symbol'] = symbol
-    
+
     return api_key_get(params, url)
 
 

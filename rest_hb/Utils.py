@@ -23,6 +23,7 @@ SECRET_KEY = "5c2dc7c1-2f987f81-ecdfe812-7ad98"
 
 # API 请求地址
 MARKET_URL = "https://api.huobi.pro"
+# MARKET_URL = "http://api.huobi.br.com"
 TRADE_URL = "https://api.huobi.pro"
 
 # 首次运行可通过get_accounts()获取acct_id,然后直接赋值,减少重复获取。

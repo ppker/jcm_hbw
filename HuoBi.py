@@ -3,14 +3,19 @@
 
 from rest_hb import HuobiServices as hb
 import pymysql, time
+import conf_main, conf_local
 
 
 class HuoBi(object):
     db = None
     cursor = None
 
+    use_conf = None
+
     def __init__(self):
-        self.db = pymysql.connect(host="47.75.110.210", user="root", password="btb123", db="huobi", port=3306,
+        self.use_conf = dict(conf_main.config)
+        self.use_conf.update(conf_local.config)
+        self.db = pymysql.connect(host="47.75.110.210", user="root", password=self.use_conf['db_password'], db="huobi", port=3306,
                                   charset="utf8")
         self.cursor = self.db.cursor()
 
@@ -47,11 +52,11 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
                 ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(item['id'])))
                 # 进行去重
                 if self.to_strip(ts_time, '1min'):
-
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     use_sql = '''insert into hb_data_kline (symbol, period, amount, count, open, close, low, 
-    high, vol, ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % ('btcusdt', '1min', item['amount'], item['count'], item['open'], item['close'],
-                     item['low'], item['high'], item['vol'], ts_time, now_time, now_time)
+    high, vol, ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % (
+                        'btcusdt', '1min', item['amount'], item['count'], item['open'], item['close'],
+                        item['low'], item['high'], item['vol'], ts_time, now_time, now_time)
 
                     self.cursor.execute(use_sql)
 
@@ -67,7 +72,6 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
             return True
         else:
             return False
-
 
     def get_trade(self):
         data = hb.get_trade('btcusdt')

@@ -54,6 +54,10 @@ high, vol, ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, %
 
         return 'ok'
 
+    def get_trade(self):
+        data = hb.get_trade('btcusdt')
+        print(data)
+
 
 if __name__ == '__main__':
     Hb = HuoBi()
@@ -61,4 +65,5 @@ if __name__ == '__main__':
 
     # data = Hb.get_history_trade()
     # print(data)
-    Hb.get_kline()
+    # Hb.get_kline()
+    Hb.get_trade()

@@ -39,14 +39,14 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
         return 'ok'
 
     def get_kline(self):
-        data = hb.get_kline('btcusdt', '1min', 1001)
+        data = hb.get_kline('btcusdt', '1day', 600)
         if data is not None:
             for item in data['data']:
 
                 ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(item['id'])))
                 now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                 use_sql = '''insert into hb_data_kline (symbol, period, amount, count, open, close, low, 
-high, vol, ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % ('btcusdt', '1min', item['amount'], item['count'], item['open'], item['close'],
+high, vol, ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % ('btcusdt', '1day', item['amount'], item['count'], item['open'], item['close'],
                  item['low'], item['high'], item['vol'], ts_time, now_time, now_time)
 
                 self.cursor.execute(use_sql)

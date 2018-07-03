@@ -39,7 +39,7 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
         return 'ok'
 
     def get_kline(self):
-        data = hb.get_kline('btcusdt', '1min', 1000)
+        data = hb.get_kline('btcusdt', '1min', 200)
 
         if data is not None:
             for item in data['data']:

@@ -58,7 +58,7 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
         return 'ok'
 
     def to_strip(self, p_ts, p_period):
-        sql = '''select id from hb_data_kline where ts = %s and period = %s limit 1''' % (p_ts, p_period)
+        sql = '''select id from hb_data_kline where ts = '%s' and period = '%s' limit 1''' % (p_ts, p_period)
         self.cursor.execute(sql)
         data = self.cursor.fetchone()
         print(data)

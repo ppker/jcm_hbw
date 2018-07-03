@@ -40,6 +40,7 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
 
     def get_kline(self):
         data = hb.get_kline('btcusdt', '1min', 1000)
+
         if data is not None:
             for item in data['data']:
 
@@ -61,12 +62,11 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
         sql = '''select id from hb_data_kline where ts = '%s' and period = '%s' limit 1''' % (p_ts, p_period)
         self.cursor.execute(sql)
         data = self.cursor.fetchone()
-        print(data)
-        print('this is strip')
+        # print('this is strip')
         if data is None:
-            return False
-        else:
             return True
+        else:
+            return False
 
 
     def get_trade(self):

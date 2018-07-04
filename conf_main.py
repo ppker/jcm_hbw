@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 config = {
-    'MARKET_URL': "https://api.huobi.pro",
-    'db_password': ''
+    'db_password': '',
+    'access_key': '',
+    'secret_key': '',
+    'market_url': 'https://api.huobi.pro',
+    'trade_url': 'https://api.huobi.pro',
 }

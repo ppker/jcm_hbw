@@ -13,19 +13,26 @@ import json
 import urllib
 import urllib.parse
 import urllib.request
-import requests
+import requests, sys, os
+
+sys.path.append(os.path.abspath('..'))
+import conf_main, conf_local
+
+app_conf = dict(conf_main.config)
+app_conf.update(conf_local.config)
 
 # 此处填写APIKEY
 
-ACCESS_KEY = "c718e0e2-37e86e13-81f44b41-4cef9"
-SECRET_KEY = "5c2dc7c1-2f987f81-ecdfe812-7ad98"
+ACCESS_KEY = app_conf['access_key']
+SECRET_KEY = app_conf['secret_key']
+
 
 
 # API 请求地址
-MARKET_URL = "https://api.huobi.pro"
+MARKET_URL = app_conf['market_url']
 # MARKET_URL = "https://api.huobi.br.com"
 
-TRADE_URL = "https://api.huobi.pro"
+TRADE_URL = app_conf['trade_url']
 
 # 首次运行可通过get_accounts()获取acct_id,然后直接赋值,减少重复获取。
 ACCOUNT_ID = None

@@ -3,7 +3,7 @@
 
 from rest_hb import HuobiServices as hb
 import pymysql, time
-import conf_main, conf_local
+import conf_main, conf_local, os
 
 
 class HuoBi(object):
@@ -15,7 +15,8 @@ class HuoBi(object):
     def __init__(self):
         self.use_conf = dict(conf_main.config)
         self.use_conf.update(conf_local.config)
-        self.db = pymysql.connect(host="47.75.110.210", user="root", password=self.use_conf['db_password'], db="huobi", port=3306,
+        self.db = pymysql.connect(host="47.75.110.210", user="root", password=self.use_conf['db_password'], db="huobi",
+                                  port=3306,
                                   charset="utf8")
         self.cursor = self.db.cursor()
 
@@ -81,8 +82,8 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
 if __name__ == '__main__':
     Hb = HuoBi()
     # HuoBi().test()
-
     # data = Hb.get_history_trade()
     # print(data)
-    Hb.get_kline()
     # Hb.get_trade()
+
+    Hb.get_kline()

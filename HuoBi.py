@@ -3,7 +3,7 @@
 
 from rest_hb import HuobiServices as hb
 import pymysql, time
-import conf_main, conf_local, os
+import conf_main, conf_local, os, sys
 
 
 class HuoBi(object):
@@ -27,22 +27,43 @@ class HuoBi(object):
     def get_history_trade(self):
         params = {
             'symbol': 'btcusdt',
-            'size': 10,
+            'size': 1000,
         }
         data = hb.get_history_trade(params)
+
         if data is not None:
             for item in data['data']:
                 item = item['data'][0]
 
-                ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(round(int(item['ts']) / 1000)))
-                now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-                use_sql = '''insert into hb_base_detail (symbol, amount, price, direction, ts, created_at, updated_at) 
-values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], item['price'],
-                                                     item['direction'], ts_time, now_time, now_time)
-                self.cursor.execute(use_sql)
-                self.db.commit()
+                # 去重过滤
+                if self.trade_strip(item['id']):
 
+                    ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(str(item['ts'])[:-3]))) + '.' + str(
+                        item['ts'])[-3:]
+                    now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+                    use_sql = '''insert into hb_base_detail (symbol, amount, price, direction, buy_code, ts_id, ts, created_at, updated_at) 
+    values ('%s', %f, %f, '%s', '%s' , %d , '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], item['price'],
+                                                                     item['direction'], int(item['id']),
+                                                                     int(item['ts']), ts_time, now_time, now_time)
+                    try:
+                        self.cursor.execute(use_sql)
+                    except IOError:
+                        print('this sql has some errir ' + use_sql)
+
+                else:
+                    pass
+            self.db.commit()
         return 'ok'
+
+    def trade_strip(self, buy_code):
+        sql = '''select id from hb_base_detail where buy_code = %s limit 1 ''' % (buy_code,)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchone()
+        # print('this is strip')
+        if data is None:
+            return True
+        else:
+            return False
 
     def get_kline(self):
         data = hb.get_kline('btcusdt', '1min', 200)
@@ -80,10 +101,14 @@ values ('%s', %f, %f, '%s', '%s', '%s', '%s') ''' % ('btcusdt', item['amount'], 
 
 
 if __name__ == '__main__':
-    Hb = HuoBi()
-    # HuoBi().test()
-    # data = Hb.get_history_trade()
-    # print(data)
-    # Hb.get_trade()
 
-    Hb.get_kline()
+    if len(sys.argv) < 2:
+        print("your command is error")
+    else:
+        Hb = HuoBi()
+        if ('get_history_trade' == sys.argv[1]):
+            Hb.get_history_trade()
+        elif ('get_kline' == sys.argv[1]):
+            Hb.get_kline()
+        else:
+            print('ok')

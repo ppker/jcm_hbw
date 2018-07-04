@@ -102,13 +102,16 @@ class HuoBi(object):
 
 if __name__ == '__main__':
 
+    time_now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     if len(sys.argv) < 2:
         print("your command is error")
     else:
         Hb = HuoBi()
         if ('get_history_trade' == sys.argv[1]):
             Hb.get_history_trade()
+            print("get_history_trade is running [" + time_now + ']')
         elif ('get_kline' == sys.argv[1]):
             Hb.get_kline()
+            print("get_history_trade is running [" + time_now + ']')
         else:
-            print('ok')
+            print('you command had some errors ' + '-'.join(sys.argv))

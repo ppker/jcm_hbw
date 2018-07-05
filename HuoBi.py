@@ -36,7 +36,7 @@ class HuoBi(object):
                 item = item['data'][0]
 
                 # 去重过滤
-                if self.trade_strip(item['id']):
+                if True or self.trade_strip(item['id']):
 
                     ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(str(item['ts'])[:-3]))) + '.' + str(
                         item['ts'])[-3:]
@@ -48,7 +48,7 @@ class HuoBi(object):
                     try:
                         self.cursor.execute(use_sql)
                     except IOError:
-                        print('this sql has some errir ' + use_sql)
+                        print('this sql has some error ' + item['id'])
 
                 else:
                     pass
@@ -56,6 +56,7 @@ class HuoBi(object):
         return 'ok'
 
     def trade_strip(self, buy_code):
+        print('ssssss')
         sql = '''select id from hb_base_detail where buy_code = %s limit 1 ''' % (buy_code,)
         self.cursor.execute(sql)
         data = self.cursor.fetchone()

@@ -5,12 +5,14 @@ from rest_hb import OkServices as ok
 import pymysql, time
 import conf_main, conf_local, os, sys
 
+
 class OkCoin(object):
     db = None
     cursor = None
     action = None
 
     use_conf = None
+
     def __init__(self):
 
         if len(sys.argv) < 2:
@@ -32,7 +34,6 @@ class OkCoin(object):
         data = ok.get_ticker(params)
         print(data)
 
-
     def get_trades(self):
         params = {
             'symbol': 'btc_usd',
@@ -42,20 +43,22 @@ class OkCoin(object):
             for item in data:
                 ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(item['date'])))
                 # 进行去重
-                if self.to_strip({'buy_code': item['tid'], 'action': 'get_trades'}):
+                if True or self.to_strip({'buy_code': item['tid'], 'action': 'get_trades'}):
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     use_sql = '''insert into ok_base_detail (symbol, amount, price, direction, ts_id, buy_code, ts, 
 created_at, updated_at) values ('%s', %f, %f, '%s', %d, '%s', '%s', '%s', '%s') ''' % ('btc_usd', item['amount'],
-        item['price'], item['type'], item['date_ms'], int(item['tid']), ts_time, now_time, now_time)
+                                                                                       item['price'], item['type'],
+                                                                                       item['date_ms'],
+                                                                                       int(item['tid']), ts_time,
+                                                                                       now_time, now_time)
                     try:
                         self.cursor.execute(use_sql)
                     except IOError:
-                        print('this sql has some error ' + use_sql)
+                        print('this sql has some error ' + item['tid'])
                     else:
                         pass
             self.db.commit()
         return 'ok'
-
 
     def get_kline(self):
         params = {
@@ -72,8 +75,9 @@ created_at, updated_at) values ('%s', %f, %f, '%s', %d, '%s', '%s', '%s', '%s') 
                 if self.to_strip({'ts': ts_time, 'action': 'get_kline'}):
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     use_sql = '''insert into ok_data_kline (symbol, period, amount, open, close, low, high, ts, 
-created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % ('btc_usd', '1min', float(item[5]),
-       float(item[1]), float(item[4]), float(item[3]), float(item[2]), ts_time, now_time, now_time)
+created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', '%s') ''' % (
+                    'btc_usd', '1min', float(item[5]),
+                    float(item[1]), float(item[4]), float(item[3]), float(item[2]), ts_time, now_time, now_time)
                     try:
                         self.cursor.execute(use_sql)
                     except IOError:
@@ -83,13 +87,7 @@ created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', '%s'
             self.db.commit()
         return 'ok'
 
-
-
-
-
-
-
-    def to_strip(self, params = {}):
+    def to_strip(self, params={}):
         if params == {}:
             print("need some params")
             return False
@@ -107,7 +105,6 @@ created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', '%s'
             return True
         else:
             return False
-
 
 
 if __name__ == '__main__':

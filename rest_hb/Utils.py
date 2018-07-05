@@ -34,6 +34,9 @@ MARKET_URL = app_conf['market_url']
 
 TRADE_URL = app_conf['trade_url']
 
+OK_REST_URL = app_conf['ok_rest_url']
+
+
 # 首次运行可通过get_accounts()获取acct_id,然后直接赋值,减少重复获取。
 ACCOUNT_ID = None
 

@@ -40,9 +40,10 @@ class HuoBi(object):
                 item = item['data'][0]
 
                 # 去重过滤
-                if item['id'] not in self.cache_data:
-                # if True or self.trade_strip(item['id']):
-
+                # if self.trade_strip(item['id']):
+                if str(item['id']) in self.cache_data:
+                    continue
+                else:
                     ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(str(item['ts'])[:-3]))) + '.' + str(
                         item['ts'])[-3:]
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
@@ -52,16 +53,17 @@ class HuoBi(object):
                                                                      int(item['ts']), ts_time, now_time, now_time)
                     try:
                         self.cursor.execute(use_sql)
-                    except IOError:
-                        print('this sql has some error ' + item['id'])
+                    except Exception:
+                        print('this sql has some error ' + str(item['id']))
+                        print(self.cache_data)
 
-                else:
-                    pass
             self.db.commit()
+
+            self.cache_data = None
         return 'ok'
 
     def get_cache(self):
-        cache_sql = '''select buy_code from hb_base_detail order by id desc limit 1000 '''
+        cache_sql = '''select buy_code from hb_base_detail order by id desc limit 1500 '''
         self.cursor.execute(cache_sql)
         data = self.cursor.fetchall()
         if data is not None:
@@ -72,7 +74,11 @@ class HuoBi(object):
 
     def trade_strip(self, buy_code):
 
-        return
+        for code in self.cache_data:
+            if buy_code == code:
+                return False
+
+        return True
         sql = '''select id from hb_base_detail where buy_code = %s limit 1 ''' % (buy_code,)
         self.cursor.execute(sql)
         data = self.cursor.fetchone()

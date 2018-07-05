@@ -12,6 +12,7 @@ class OkCoin(object):
     action = None
 
     use_conf = None
+    cache_data = None
 
     def __init__(self):
 
@@ -34,16 +35,31 @@ class OkCoin(object):
         data = ok.get_ticker(params)
         print(data)
 
+    def get_cache(self):
+        cache_sql = '''select buy_code from ok_base_detail order by id desc limit 1200 '''
+        self.cursor.execute(cache_sql)
+        data = self.cursor.fetchall()
+        if data is not None:
+            cache_data = [x[0] for x in data]
+            return cache_data
+        return []
+
+
     def get_trades(self):
         params = {
             'symbol': 'btc_usd',
         }
         data = ok.get_trades(params)
         if data is not None:
+            # 加载缓存
+            self.cache_data = self.get_cache()
             for item in data:
                 ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(item['date'])))
                 # 进行去重
-                if True or self.to_strip({'buy_code': item['tid'], 'action': 'get_trades'}):
+                if str(item['tid']) in self.cache_data:
+                    continue
+                else:
+                # if True or self.to_strip({'buy_code': item['tid'], 'action': 'get_trades'}):
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     use_sql = '''insert into ok_base_detail (symbol, amount, price, direction, ts_id, buy_code, ts, 
 created_at, updated_at) values ('%s', %f, %f, '%s', %d, '%s', '%s', '%s', '%s') ''' % ('btc_usd', item['amount'],
@@ -58,6 +74,7 @@ created_at, updated_at) values ('%s', %f, %f, '%s', %d, '%s', '%s', '%s', '%s') 
                     else:
                         pass
             self.db.commit()
+            self.cache_data = []
         return 'ok'
 
     def get_kline(self):

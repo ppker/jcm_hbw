@@ -11,6 +11,7 @@ class HuoBi(object):
     cursor = None
 
     use_conf = None
+    cache_data = None
 
     def __init__(self):
         self.use_conf = dict(conf_main.config)
@@ -32,11 +33,15 @@ class HuoBi(object):
         data = hb.get_history_trade(params)
 
         if data is not None:
+            # 加载缓存
+            self.cache_data = self.get_cache()
+
             for item in data['data']:
                 item = item['data'][0]
 
                 # 去重过滤
-                if True or self.trade_strip(item['id']):
+                if item['id'] not in self.cache_data:
+                # if True or self.trade_strip(item['id']):
 
                     ts_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(str(item['ts'])[:-3]))) + '.' + str(
                         item['ts'])[-3:]
@@ -55,8 +60,19 @@ class HuoBi(object):
             self.db.commit()
         return 'ok'
 
+    def get_cache(self):
+        cache_sql = '''select buy_code from hb_base_detail order by id desc limit 1000 '''
+        self.cursor.execute(cache_sql)
+        data = self.cursor.fetchall()
+        if data is not None:
+            cache_data = [x[0] for x in data]
+            return cache_data
+        return []
+
+
     def trade_strip(self, buy_code):
-        print('ssssss')
+
+        return
         sql = '''select id from hb_base_detail where buy_code = %s limit 1 ''' % (buy_code,)
         self.cursor.execute(sql)
         data = self.cursor.fetchone()

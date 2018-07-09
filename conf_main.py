@@ -8,4 +8,5 @@ config = {
     'market_url': 'https://api.huobi.pro',
     'trade_url': 'https://api.huobi.pro',
     'ok_rest_url': 'https://www.okcoin.com',
+    'finex_url': 'https://api.bitfinex.com/v2',
 }

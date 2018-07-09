@@ -17,5 +17,5 @@ def get_trades(params={}):
 
 # 获取finex的K线数据
 def get_kline(params={}):
-    url = OK_REST_URL + '/candles/trade:1m:tBTCUSD/hist'
+    url = FINEX_URL + '/candles/trade:1m:tBTCUSD/hist'
     return http_get_request(url, params)

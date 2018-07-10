@@ -110,12 +110,12 @@ ts, created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', 
 if __name__ == '__main__':
     time_now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     if len(sys.argv) < 2:
-        print("your command is error")
+        print("Finex your command is error")
     else:
         Fin = Finex()
         if 'get_trades' == Fin.action:
             Fin.get_trades()
-            print("get_trades is running [" + time_now + ']')
+            print("Finex get_trades is running [" + time_now + ']')
         elif 'get_kline' == Fin.action:
             Fin.get_kline()
-            print("get_kline is running [" + time_now + ']')
+            print("Finex get_kline is running [" + time_now + ']')

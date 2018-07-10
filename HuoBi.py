@@ -132,9 +132,9 @@ if __name__ == '__main__':
         Hb = HuoBi()
         if ('get_history_trade' == sys.argv[1]):
             Hb.get_history_trade()
-            print("get_history_trade is running [" + time_now + ']')
+            print("Huobi get_history_trade is running [" + time_now + ']')
         elif ('get_kline' == sys.argv[1]):
             Hb.get_kline()
-            print("get_history_trade is running [" + time_now + ']')
+            print("Huobi get_history_trade is running [" + time_now + ']')
         else:
-            print('you command had some errors ' + '-'.join(sys.argv))
+            print('Huobi you command had some errors ' + '-'.join(sys.argv))

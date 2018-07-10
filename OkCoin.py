@@ -132,10 +132,10 @@ if __name__ == '__main__':
         OK = OkCoin()
         if 'get_ticker' == OK.action:
             OK.get_ticker()
-            print("get_ticker is running [" + time_now + ']')
+            print("Okcoin get_ticker is running [" + time_now + ']')
         elif 'get_trades' == OK.action:
             OK.get_trades()
-            print("get_trades is running [" + time_now + ']')
+            print("Okcoin get_trades is running [" + time_now + ']')
         elif 'get_kline' == OK.action:
             OK.get_kline()
-            print("get_kline is running [" + time_now + ']')
+            print("Okcoin get_kline is running [" + time_now + ']')

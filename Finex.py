@@ -39,7 +39,7 @@ class Finex(object):
     def get_trades(self):
         params = {
             'limit': '1000',
-            'sort': '1',
+            'sort': '-1',
         }
         data = finex.get_trades(params)
         if data is not None:
@@ -84,7 +84,7 @@ values ('%s', %f, %f, %d, '%s', '%s', '%s', '%s')''' % (
     def get_kline(self):
         params = {
             'limit': '100',
-            'sort': '1',
+            'sort': '-1',
         }
         data = finex.get_kline(params)
         if data is not None:

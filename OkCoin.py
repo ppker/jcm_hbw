@@ -69,7 +69,7 @@ created_at, updated_at) values ('%s', %f, %f, '%s', %d, '%s', '%s', '%s', '%s') 
                                                                                        now_time, now_time)
                     try:
                         self.cursor.execute(use_sql)
-                    except IOError:
+                    except Exception:
                         print('this sql has some error ' + item['tid'])
                     else:
                         pass
@@ -97,7 +97,7 @@ created_at, updated_at) values ('%s', '%s', %f, %f, %f, %f, %f, '%s', '%s', '%s'
                     float(item[1]), float(item[4]), float(item[3]), float(item[2]), ts_time, now_time, now_time)
                     try:
                         self.cursor.execute(use_sql)
-                    except IOError:
+                    except Exception:
                         print("this sql has some error " + use_sql)
                     else:
                         pass

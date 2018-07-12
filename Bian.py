@@ -39,7 +39,11 @@ class Bian(object):
 
         self.client = Client('PBM4vgJTZ0aWKKaIeB720VqUm9TQDzcdW3yxnpdd0Urj9niLjT1D1YGpU65RUDaa',
                              'aMDicDTNI7J0Qhzh2RDmNj2jc7Y2fjsTvLM8Np5Cft0uAeqa4ZVHbg8JG8UFJctK',
-                             {"proxies": self.proxies, "verify": True, "timeout": 20})
+                             {
+                                 # "proxies": self.proxies, 
+                                 "verify": True,
+                                 "timeout": 20
+                             })
 
     def test(self):
         # data = self.client.get_recent_trades(symbol='BNBBTC')

@@ -40,7 +40,7 @@ class Bian(object):
         self.client = Client('PBM4vgJTZ0aWKKaIeB720VqUm9TQDzcdW3yxnpdd0Urj9niLjT1D1YGpU65RUDaa',
                              'aMDicDTNI7J0Qhzh2RDmNj2jc7Y2fjsTvLM8Np5Cft0uAeqa4ZVHbg8JG8UFJctK',
                              {
-                                 # "proxies": self.proxies, 
+                                 # "proxies": self.proxies,
                                  "verify": True,
                                  "timeout": 20
                              })
@@ -119,7 +119,7 @@ buy_code, ts, created_at, updated_at) values ('%s', %f, %f, %d, %d, %d, '%s', '%
             return False
 
     def get_kline(self):
-        data = self.client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE)
+        data = self.client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=120)
         if data is not None:
             for item in data:
                 open_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(round(item[0] / 1000))))
